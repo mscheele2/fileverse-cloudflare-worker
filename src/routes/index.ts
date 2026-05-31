@@ -12,6 +12,14 @@ import llmContent from "../static/llm.txt";
 
 const app = new Hono<{ Bindings: Env }>();
 
+app.use('*', (c, next) => {
+  c.header('Access-Control-Allow-Origin', '*')
+  c.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  c.header('Access-Control-Allow-Headers', 'Content-Type')
+  if (c.req.method === 'OPTIONS') return c.text('', 204)
+  return next()
+})
+
 app.use("*", errorHandler);
 
 app.get("/", (c) => c.text(guideContent));
